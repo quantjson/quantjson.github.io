@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>莊子杰 (Jason Zhuang) | 互動式履歷儀表板</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        slate: {
+                            850: '#152033',
+                            900: '#0f172a',
+                        },
+                        cyan: {
+                            400: '#22d3ee',
+                            500: '#06b6d4',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* 隱藏捲軸但保留捲動功能 */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569; 
+        }
+
+        /* Chart Container Requirements */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 45vh;
+        }
+        
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+
+        /* 打字機效果游標 */
+        .cursor::after {
+            content: '█';
+            animation: blink 1s step-start infinite;
+            color: #22d3ee;
+        }
+        @keyframes blink { 50% { opacity: 0; } }
+
+        /* 卡片懸浮特效 */
+        .tech-card {
+            transition: all 0.3s ease;
+        }
+        .tech-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(6, 182, 212, 0.2);
+            border-color: #06b6d4;
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-300 font-sans antialiased flex flex-col md:flex-row min-h-screen">
+
+    <!-- Chosen Palette: Slate (Dark Mode Base) & Cyan (Tech Accent) -->
+    <!-- Application Structure Plan: 
+         採用側邊導覽的「深色科技儀表板 (Dashboard)」佈局。
+         1. Hero/Summary: 使用終端機 (Terminal) 介面呈現個人簡介，強化軟體工程師形象。
+         2. Skills Matrix: 左側互動式雷達圖 (Chart.js) 比較技能維度，右側為動態說明的技術棧，點擊技術類別可更新下方「空拍機應用價值」的說明，將過往經驗直接對接職缺需求。
+         3. AI Projects: 使用互動卡片，點擊可展開專案細節與具體技術貢獻。
+         4. Experience Timeline: 垂直時間軸設計，清晰呈現職涯發展與量化開發的系統穩定性經驗。
+         此結構將傳統履歷扁平化，讓招募主管能透過點擊主動探索，加深對「AI視覺+系統整合」核心能力的印象。
+    -->
+    <!-- Visualization & Content Choices: 
+         1. 個人簡介 -> 目標：快速吸引技術主管 -> 呈現：打字機動畫終端機 -> 互動：自動播放 -> 理由：展現 Hacker/工程師文化。
+         2. 核心技能 -> 目標：量化展現綜合實力 -> 呈現：雷達圖 (Chart.js Canvas) -> 互動：Hover 顯示細節，點擊右側選單切換重點 -> 理由：視覺化呈現跨領域 (AI/軟體/量化) 的多元能力。
+         3. 專案經驗 -> 目標：突顯邊緣運算與影像處理實力 -> 呈現：互動式資訊卡片 (HTML/CSS) -> 互動：Hover 特效與詳細資訊展開 -> 理由：保持版面簡潔，重點展示解決方案與空拍機關聯性。
+         4. 經歷/學歷 -> 目標：展現穩定性與系統開發底層邏輯 -> 呈現：時間軸 (HTML/CSS) -> 互動：滾動視差/Hover -> 理由：時間軸最適合呈現經驗累積的脈絡。
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <!-- Sidebar Navigation -->
+    <nav class="md:w-64 bg-slate-850 border-r border-slate-700/50 flex-shrink-0 z-50 md:sticky md:top-0 h-auto md:h-screen p-6 shadow-xl flex flex-col justify-between">
+        <div>
+            <div class="mb-8 text-center md:text-left">
+                <div class="w-24 h-24 rounded-full bg-slate-700 mx-auto md:mx-0 flex items-center justify-center text-4xl border-2 border-cyan-500 mb-4 shadow-[0_0_15px_rgba(34,211,238,0.3)]">
+                    👨‍💻
+                </div>
+                <h1 class="text-2xl font-bold text-white tracking-wide">莊子杰</h1>
+                <p class="text-cyan-400 font-mono text-sm mt-1">Jason Zhuang</p>
+                <div class="mt-4 flex flex-wrap gap-2 justify-center md:justify-start">
+                    <span class="px-2 py-1 text-xs bg-slate-800 border border-slate-600 rounded text-slate-300">AI 軟體工程師</span>
+                    <span class="px-2 py-1 text-xs bg-slate-800 border border-slate-600 rounded text-slate-300">電腦視覺</span>
+                </div>
+            </div>
+            
+            <ul class="space-y-2 hidden md:block">
+                <li><a href="#summary" class="block py-2 px-4 rounded hover:bg-slate-800 hover:text-cyan-400 transition nav-link text-white bg-slate-800 border-l-2 border-cyan-400" data-target="summary">💡 終端簡介</a></li>
+                <li><a href="#skills" class="block py-2 px-4 rounded hover:bg-slate-800 hover:text-cyan-400 transition nav-link text-slate-400" data-target="skills">🛠 核心技術與模型</a></li>
+                <li><a href="#projects" class="block py-2 px-4 rounded hover:bg-slate-800 hover:text-cyan-400 transition nav-link text-slate-400" data-target="projects">🚀 AI 視覺實戰</a></li>
+                <li><a href="#experience" class="block py-2 px-4 rounded hover:bg-slate-800 hover:text-cyan-400 transition nav-link text-slate-400" data-target="experience">💻 系統工程經歷</a></li>
+                <li><a href="#quant" class="block py-2 px-4 rounded hover:bg-slate-800 hover:text-cyan-400 transition nav-link text-slate-400" data-target="quant">📊 量化開發優勢</a></li>
+            </ul>
+        </div>
+        
+        <div class="mt-8 text-sm text-slate-500 border-t border-slate-700/50 pt-4 hidden md:block">
+            <p>📍 台灣, 台中市</p>
+            <p>📞 0916-445-452</p>
+            <p class="truncate" title="quantjson@gmail.com">✉️ quantjson@gmail.com</p>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-1 p-6 md:p-10 lg:p-16 overflow-y-auto w-full">
+        
+        <!-- Section 1: Summary -->
+        <section id="summary" class="mb-24 scroll-mt-10">
+            <h2 class="text-3xl font-bold text-white mb-6 flex items-center border-b border-slate-700 pb-2">
+                <span class="text-cyan-500 mr-3">_</span> 系統初始化：個人簡介
+            </h2>
+            <p class="text-slate-400 mb-6 leading-relaxed">
+                本區塊展示我的核心動機與技術背景。結合電子工程的底層邏輯與軟體開發的高效產出，我致力於將 AI 視覺模型落地應用於硬體設備（如空拍機/機器手臂）中。
+            </p>
+
+            <div class="bg-slate-950 border border-slate-800 rounded-lg p-6 shadow-2xl font-mono text-sm leading-relaxed max-w-4xl">
+                <div class="flex gap-2 mb-4 border-b border-slate-800 pb-2">
+                    <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                    <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                    <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                </div>
+                <div class="text-green-400 mb-2">jason@machine:~$ cat cv_summary.txt</div>
+                <div id="typewriter-text" class="text-slate-300">
+                    <!-- Text injected via JS -->
+                    <span class="cursor"></span>
+                </div>
+                <div class="mt-6 text-slate-500">
+                    <p>// 期待貢獻：為團隊打造具備精準視覺與高效邊緣運算能力的飛行系統。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Skills -->
+        <section id="skills" class="mb-24 scroll-mt-10">
+            <h2 class="text-3xl font-bold text-white mb-6 flex items-center border-b border-slate-700 pb-2">
+                <span class="text-cyan-500 mr-3">./</span> 核心技術矩陣
+            </h2>
+            <p class="text-slate-400 mb-8 leading-relaxed">
+                本區塊透過雷達圖量化展示我的技術堆疊。空拍機的 AI 軟體開發不僅需要模型訓練能力，更需要紮實的 C++/Python 系統串接與自動化排程經驗。您可以點擊右側的技術標籤，檢視該技術如何應用於空拍機開發。
+            </p>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+                <!-- 雷達圖容器 -->
+                <div class="bg-slate-800/50 p-6 rounded-xl border border-slate-700 w-full">
+                    <div class="chart-container">
+                        <canvas id="skillsRadarChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- 技能互動選單 -->
+                <div class="flex flex-col gap-4">
+                    <button onclick="updateSkillDetail('cv')" class="text-left tech-card bg-slate-800 p-4 rounded-lg border border-slate-700 focus:outline-none focus:border-cyan-500 focus:bg-slate-800/80">
+                        <h3 class="text-cyan-400 font-bold text-lg mb-1">👁️ AI 與影像辨識 (Computer Vision)</h3>
+                        <p class="text-sm text-slate-400">CNN, VGG16, MLP, 特徵萃取, 邊緣偵測, Data Augmentation</p>
+                    </button>
+                    
+                    <button onclick="updateSkillDetail('lang')" class="text-left tech-card bg-slate-800 p-4 rounded-lg border border-slate-700 focus:outline-none focus:border-cyan-500 focus:bg-slate-800/80">
+                        <h3 class="text-cyan-400 font-bold text-lg mb-1">💻 程式語言基礎</h3>
+                        <p class="text-sm text-slate-400">Python, C++, C, Verilog</p>
+                    </button>
+
+                    <button onclick="updateSkillDetail('sys')" class="text-left tech-card bg-slate-800 p-4 rounded-lg border border-slate-700 focus:outline-none focus:border-cyan-500 focus:bg-slate-800/80">
+                        <h3 class="text-cyan-400 font-bold text-lg mb-1">⚙️ 軟體工程與系統架構</h3>
+                        <p class="text-sm text-slate-400">API/WebSocket 串接, 伺服器測試, 自動化排程, SQL</p>
+                    </button>
+
+                    <button onclick="updateSkillDetail('data')" class="text-left tech-card bg-slate-800 p-4 rounded-lg border border-slate-700 focus:outline-none focus:border-cyan-500 focus:bg-slate-800/80">
+                        <h3 class="text-cyan-400 font-bold text-lg mb-1">📈 數據分析與量化控制</h3>
+                        <p class="text-sm text-slate-400">時間序列資料處理, 風險控管(MDD), 演算法回測</p>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 動態解說面板 -->
+            <div class="mt-8 bg-cyan-900/20 border border-cyan-800/50 p-6 rounded-lg">
+                <h4 class="text-white font-bold mb-2 flex items-center">
+                    <span class="mr-2">💡</span> <span id="skill-detail-title">系統契合度分析</span>
+                </h4>
+                <p id="skill-detail-desc" class="text-cyan-100/80 text-sm leading-relaxed">
+                    請點選上方技術分類，檢視該項技能如何轉換為空拍機開發的實戰戰力。
+                </p>
+            </div>
+        </section>
+
+        <!-- Section 3: Projects -->
+        <section id="projects" class="mb-24 scroll-mt-10">
+            <h2 class="text-3xl font-bold text-white mb-6 flex items-center border-b border-slate-700 pb-2">
+                <span class="text-cyan-500 mr-3">#</span> AI 視覺與軟硬體整合專案
+            </h2>
+            <p class="text-slate-400 mb-8 leading-relaxed">
+                此區塊展示我將深度學習模型應用於真實情境的成果。特別是「AI 索羅門競賽」中將視覺辨識與硬體（機械手臂）結合的經驗，其避障與目標定位邏輯與空拍機系統高度同源。
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Project 1 -->
+                <div class="bg-slate-800 border border-slate-700 rounded-xl overflow-hidden hover:border-cyan-500 transition duration-300 flex flex-col h-full group relative">
+                    <div class="h-2 bg-gradient-to-r from-cyan-500 to-blue-600"></div>
+                    <div class="p-6 flex-1 flex flex-col">
+                        <div class="text-xs font-mono text-cyan-400 mb-2 border border-cyan-900 bg-cyan-900/30 inline-block px-2 py-1 rounded w-max">競賽全國第11名 (200隊)</div>
+                        <h3 class="text-xl font-bold text-white mb-3">AI 索羅門競賽 - 邊緣偵測與手臂控制</h3>
+                        <p class="text-slate-400 text-sm mb-4 flex-1">透過影像識別技術結合機械手臂，實現工業自動化控制（包含避障、取放、亂堆辨識、反光物辨識）。</p>
+                        <div class="border-t border-slate-700 pt-4 mt-auto">
+                            <h4 class="text-white text-sm font-bold mb-2">技術貢獻：</h4>
+                            <ul class="text-sm text-slate-400 space-y-1 list-disc list-inside">
+                                <li>設計軟體驅動程式控制實體硬體。</li>
+                                <li>主導「邊緣偵測模型」訓練優化。</li>
+                                <li><span class="text-cyan-300">高度相關：</span>硬體自動化避障邏輯。</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 2 -->
+                <div class="bg-slate-800 border border-slate-700 rounded-xl overflow-hidden hover:border-cyan-500 transition duration-300 flex flex-col h-full group relative">
+                    <div class="h-2 bg-gradient-to-r from-blue-500 to-indigo-600"></div>
+                    <div class="p-6 flex-1 flex flex-col">
+                        <div class="text-xs font-mono text-cyan-400 mb-2 border border-cyan-900 bg-cyan-900/30 inline-block px-2 py-1 rounded w-max">Kaggle 專案</div>
+                        <h3 class="text-xl font-bold text-white mb-3">人物辨識及分類 (CNN/VGG16)</h3>
+                        <p class="text-slate-400 text-sm mb-4 flex-1">利用深度學習網路針對特定人物影像進行高精度辨識與分類優化。</p>
+                        <div class="border-t border-slate-700 pt-4 mt-auto">
+                            <h4 class="text-white text-sm font-bold mb-2">技術貢獻：</h4>
+                            <ul class="text-sm text-slate-400 space-y-1 list-disc list-inside">
+                                <li>建立50角色特徵資料庫與資料擴增。</li>
+                                <li>導入 VGG16 預訓練模型作為骨幹。</li>
+                                <li>利用 Seaborn 混淆矩陣精準調參。</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 3 -->
+                <div class="bg-slate-800 border border-slate-700 rounded-xl overflow-hidden hover:border-cyan-500 transition duration-300 flex flex-col h-full group relative">
+                    <div class="h-2 bg-gradient-to-r from-indigo-500 to-purple-600"></div>
+                    <div class="p-6 flex-1 flex flex-col">
+                        <div class="text-xs font-mono text-cyan-400 mb-2 border border-cyan-900 bg-cyan-900/30 inline-block px-2 py-1 rounded w-max">AI CPU 競賽</div>
+                        <h3 class="text-xl font-bold text-white mb-3">愛文芒果影像辨識</h3>
+                        <p class="text-slate-400 text-sm mb-4 flex-1">開發電腦視覺模型，協助果農透過空拍或光學影像自動分類芒果等級。</p>
+                        <div class="border-t border-slate-700 pt-4 mt-auto">
+                            <h4 class="text-white text-sm font-bold mb-2">技術貢獻：</h4>
+                            <ul class="text-sm text-slate-400 space-y-1 list-disc list-inside">
+                                <li>解決產業痛點，落實影像自動化。</li>
+                                <li>辨識 3 級食用等級與 7 級加工等級。</li>
+                                <li>具備處理複雜自然光學影像經驗。</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-4 text-right text-xs text-slate-500">
+                *(其他機器學習專案包含：Kaggle自動語音辨識 CTC模型訓練、Kaggle房價預測 Stacking綜合模型建構)*
+            </div>
+        </section>
+
+        <!-- Section 4: Experience -->
+        <section id="experience" class="mb-24 scroll-mt-10">
+            <h2 class="text-3xl font-bold text-white mb-6 flex items-center border-b border-slate-700 pb-2">
+                <span class="text-cyan-500 mr-3">></span> 軟體與系統工程經歷
+            </h2>
+            <p class="text-slate-400 mb-8 leading-relaxed">
+                本區塊列出近期的職業經歷。雖然領域主要在金融與量化策略，但其本質是處理**極端龐大的資料流、高頻率指令發送以及建構零時差的穩定後端系統**。這些底層系統架構能力，是開發空拍機可靠飛行軟體的關鍵基石。
+            </p>
+
+            <div class="relative border-l-2 border-slate-700 ml-3 md:ml-6 space-y-12 pb-8">
+                
+                <!-- Exp 1 -->
+                <div class="relative pl-8 md:pl-0">
+                    <div class="md:hidden absolute w-4 h-4 bg-cyan-500 rounded-full -left-[9px] top-1 shadow-[0_0_10px_rgba(34,211,238,0.8)]"></div>
+                    <div class="md:grid md:grid-cols-12 md:gap-8 items-start">
+                        <div class="hidden md:block col-span-3 text-right pt-1 relative">
+                            <div class="text-cyan-400 font-mono font-bold">2024.03 - 2024.05</div>
+                            <div class="text-slate-500 text-sm">Vanshi Global</div>
+                            <div class="absolute w-4 h-4 bg-cyan-500 rounded-full -right-[25px] top-2 shadow-[0_0_10px_rgba(34,211,238,0.8)] z-10 border-4 border-slate-900"></div>
+                        </div>
+                        <div class="md:hidden text-cyan-400 font-mono font-bold mb-1">2024.03 - 2024.05</div>
+                        <div class="col-span-9 bg-slate-800/80 p-6 rounded-lg border border-slate-700 hover:border-cyan-500/50 transition">
+                            <h3 class="text-xl font-bold text-white mb-1">策略開發與測試工程師</h3>
+                            <div class="md:hidden text-slate-500 text-sm mb-4">Vanshi Global</div>
+                            <ul class="text-slate-300 space-y-2 mt-4">
+                                <li class="flex items-start"><span class="text-cyan-500 mr-2 mt-0.5">▪</span> <div><strong>系統自動化測試：</strong> 協助測試資金輪動自動化程式，排除 API Key 錯誤，確保系統高可用性。</div></li>
+                                <li class="flex items-start"><span class="text-cyan-500 mr-2 mt-0.5">▪</span> <div><strong>伺服器程式開發：</strong> 參與交易伺服器程式的開發與測試，實現高頻率、低延遲的指令發送系統。</div></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Exp 2 -->
+                <div class="relative pl-8 md:pl-0">
+                    <div class="md:hidden absolute w-4 h-4 bg-slate-600 rounded-full -left-[9px] top-1"></div>
+                    <div class="md:grid md:grid-cols-12 md:gap-8 items-start">
+                        <div class="hidden md:block col-span-3 text-right pt-1 relative">
+                            <div class="text-slate-300 font-mono font-bold">2022.10 - 至今</div>
+                            <div class="text-slate-500 text-sm">量化通 (Quantpass)</div>
+                            <div class="absolute w-4 h-4 bg-slate-600 rounded-full -right-[25px] top-2 z-10 border-4 border-slate-900"></div>
+                        </div>
+                        <div class="md:hidden text-slate-300 font-mono font-bold mb-1">2022.10 - 至今</div>
+                        <div class="col-span-9 bg-slate-800/80 p-6 rounded-lg border border-slate-700 hover:border-cyan-500/50 transition">
+                            <h3 class="text-xl font-bold text-white mb-1">軟體/量化開發工程師</h3>
+                            <div class="md:hidden text-slate-500 text-sm mb-4">量化通 (Quantpass)</div>
+                            <ul class="text-slate-300 space-y-2 mt-4">
+                                <li class="flex items-start"><span class="text-cyan-500 mr-2 mt-0.5">▪</span> <div><strong>後端與 API 開發：</strong> 負責多平台下單機功能的串接與測試，深度使用 API 與 WebSocket 協議，建構高效、穩定、零時差的數據傳輸連接。</div></li>
+                                <li class="flex items-start"><span class="text-cyan-500 mr-2 mt-0.5">▪</span> <div><strong>演算法與數據工程：</strong> 開發多種數據分析模型與自動化腳本，撰寫網路爬蟲定期獲取市場大數據，並使用 Pandas, Numpy, SQL 進行資料清洗與儲存。</div></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5: Quant & Education Layout -->
+        <section id="quant" class="mb-10 scroll-mt-10 grid grid-cols-1 xl:grid-cols-2 gap-10">
+            <!-- Quant Experience -->
+            <div>
+                <h2 class="text-2xl font-bold text-white mb-6 flex items-center border-b border-slate-700 pb-2">
+                    <span class="text-cyan-500 mr-3">~</span> 量化交易與區塊鏈優勢
+                </h2>
+                <div class="bg-slate-800 p-6 rounded-lg border border-slate-700 h-full">
+                    <p class="text-sm text-cyan-400 mb-4 font-mono">
+                        // 處理龐大時間序列數據、極端容錯設計與高頻資料流傳輸的底層實力。
+                    </p>
+                    <ul class="space-y-4">
+                        <li class="bg-slate-900/50 p-4 rounded border border-slate-700/50">
+                            <strong class="text-white block mb-1">🔗 加密貨幣策略與交易所串接</strong>
+                            <span class="text-slate-400 text-sm">熟悉區塊鏈生態，將自動化交易策略成功部署至各大主流交易所，具備深厚的第三方 API 與 WebHook 介接能力。</span>
+                        </li>
+                        <li class="bg-slate-900/50 p-4 rounded border border-slate-700/50">
+                            <strong class="text-white block mb-1">🛡️ 高頻數據分析與風險管理</strong>
+                            <span class="text-slate-400 text-sm">擅長處理複雜金融數據，建立嚴謹自動化回測框架，優化最大回撤 (MDD)，高度重視系統與演算法的穩定容錯性。</span>
+                        </li>
+                        <li class="bg-slate-900/50 p-4 rounded border border-slate-700/50">
+                            <strong class="text-white block mb-1">🗣️ 跨界溝通與專案領導</strong>
+                            <span class="text-slate-400 text-sm">曾任北科大投資金融社社長與公關長，舉辦統籌多場百人規模講座，具備出色的跨領域資源整合能力。</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Education -->
+            <div>
+                <h2 class="text-2xl font-bold text-white mb-6 flex items-center border-b border-slate-700 pb-2">
+                    <span class="text-cyan-500 mr-3">*</span> 學歷與證照
+                </h2>
+                <div class="bg-slate-800 p-6 rounded-lg border border-slate-700 h-full flex flex-col justify-center">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-16 h-16 bg-slate-700 rounded-lg flex items-center justify-center text-3xl shadow-inner border border-slate-600">🎓</div>
+                        <div>
+                            <h3 class="text-xl font-bold text-white">國立臺北科技大學 (NTUT)</h3>
+                            <p class="text-cyan-400 font-mono">電資學院 電子工程系 學士</p>
+                            <p class="text-slate-500 text-sm">2019.09 – 2023.06</p>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-3 border-t border-slate-700 pt-6">
+                        <div class="flex items-start text-sm text-slate-300">
+                            <span class="text-yellow-500 mr-2">🏆</span> 
+                            <span>獲頒 110 學年度學業、操行、體育「三育成績優異獎」。</span>
+                        </div>
+                        <div class="flex items-start text-sm text-slate-300">
+                            <span class="text-green-500 mr-2">📜</span> 
+                            <span>取得教育部智慧創新跨域人才計畫 Coding 365「Python」、「IoT (物聯網)」、「Android」專業證書。</span>
+                        </div>
+                        <div class="flex items-start text-sm text-slate-300">
+                            <span class="text-blue-500 mr-2">🔧</span> 
+                            <span>擁有丙級工業電子、乙級數位電子等硬體技術士證照。</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        // --- 1. Terminal Typing Effect ---
+        const summaryText = "具備電子工程背景與堅實程式開發能力的軟體工程師，專注於 Python 與 C++ 開發，對 AI 影像辨識與自動化系統整合抱有高度熱忱。\n\n曾於多項指標性 AI 競賽中（如 AI 索羅門競賽、Kaggle）建構並優化電腦視覺模型（CNN、VGG16），具備從影像預處理、特徵萃取到邊緣偵測模型訓練的實戰經驗，並成功將軟體演算法與硬體（機械手臂）進行控制整合。\n\n在近期的軟體工程職涯中，深耕於數據處理、API/WebSocket 高效串接與自動化伺服器建置，擅長將複雜邏輯轉化為高穩定性的自動化程式。";
+        
+        let i = 0;
+        const speed = 25; // typing speed in ms
+        const typeTarget = document.getElementById("typewriter-text");
+        // Clear placeholder span
+        typeTarget.innerHTML = '<span class="cursor"></span>';
+
+        function typeWriter() {
+            if (i < summaryText.length) {
+                let char = summaryText.charAt(i);
+                if (char === '\n') {
+                    char = '<br>';
+                }
+                // insert character before the cursor
+                typeTarget.innerHTML = typeTarget.innerHTML.replace('<span class="cursor"></span>', char + '<span class="cursor"></span>');
+                i++;
+                setTimeout(typeWriter, speed);
+            }
+        }
+
+        // Start typing after a short delay
+        setTimeout(typeWriter, 500);
+
+        // --- 2. Navigation Active State (Scroll Spy) ---
+        const sections = document.querySelectorAll("section");
+        const navLinks = document.querySelectorAll(".nav-link");
+
+        window.addEventListener("scroll", () => {
+            let current = "";
+            sections.forEach((section) => {
+                const sectionTop = section.offsetTop;
+                if (scrollY >= sectionTop - 150) {
+                    current = section.getAttribute("id");
+                }
+            });
+
+            navLinks.forEach((link) => {
+                link.classList.remove("text-white", "bg-slate-800", "border-l-2", "border-cyan-400");
+                link.classList.add("text-slate-400");
+                if (link.getAttribute("data-target") === current) {
+                    link.classList.remove("text-slate-400");
+                    link.classList.add("text-white", "bg-slate-800", "border-l-2", "border-cyan-400");
+                }
+            });
+        });
+
+        // --- 3. Chart.js Skills Radar Chart ---
+        const ctx = document.getElementById('skillsRadarChart').getContext('2d');
+        
+        // Custom styling for Chart.js
+        Chart.defaults.color = '#94a3b8';
+        Chart.defaults.font.family = "'Inter', sans-serif";
+
+        const skillsData = {
+            labels: ['程式語言基礎', 'AI 影像辨識', '機器學習套件', '系統後端/API', '自動化硬體整合', '量化數據處理'],
+            datasets: [{
+                label: '技能熟悉度',
+                data: [90, 85, 80, 88, 85, 85],
+                backgroundColor: 'rgba(6, 182, 212, 0.2)', // Cyan transparent
+                borderColor: 'rgba(6, 182, 212, 1)',
+                pointBackgroundColor: '#0f172a',
+                pointBorderColor: '#22d3ee',
+                pointHoverBackgroundColor: '#22d3ee',
+                pointHoverBorderColor: '#fff',
+                borderWidth: 2,
+            }]
+        };
+
+        const config = {
+            type: 'radar',
+            data: skillsData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false, // CRITICAL: Allows CSS to control height
+                scales: {
+                    r: {
+                        angleLines: { color: 'rgba(255, 255, 255, 0.1)' },
+                        grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                        pointLabels: {
+                            font: { size: 12, family: "'Inter', sans-serif" },
+                            color: '#cbd5e1'
+                        },
+                        ticks: {
+                            display: false, // Hide numeric values
+                            min: 0,
+                            max: 100
+                        }
+                    }
+                },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: '#1e293b',
+                        titleColor: '#22d3ee',
+                        bodyColor: '#e2e8f0',
+                        borderColor: '#334155',
+                        borderWidth: 1,
+                        padding: 10,
+                        callbacks: {
+                            label: function(context) {
+                                return ' 實力維度: ' + context.raw + '/100';
+                            }
+                        }
+                    }
+                }
+            }
+        };
+
+        let myRadarChart = new Chart(ctx, config);
+
+        // --- 4. Interactive Skill Details Logic ---
+        const skillDetails = {
+            'cv': {
+                title: '電腦視覺如何應用於空拍機？',
+                desc: '空拍機需要即時辨識障礙物、追蹤目標或進行地貌分析。我熟練運用 CNN 與 VGG16 架構，並具備優化邊緣偵測的實戰經驗（如索羅門競賽），能將龐大的影像數據透過 Data Augmentation 強化模型，為空拍機打造精準的「視覺神經中樞」。'
+            },
+            'lang': {
+                title: '底層語言如何發揮效用？',
+                desc: '空拍機的飛行控制與影像處理極度要求低延遲。C++ 提供底層控制的極速效能，Python 則負責高階的 AI 模型訓練與邏輯編寫。結合我電子工程背景的 Verilog 硬體邏輯思維，能完美兼顧軟硬體通訊的效率與穩定。'
+            },
+            'sys': {
+                title: '後端與 API 串接的價值？',
+                desc: '無人機不僅是孤立的飛行器，更需要將遙測數據即時回傳至地面站台。我在量化開發中累積了深厚的 WebSocket 與高頻率 API 串接經驗，能確保空拍機與伺服器之間的指令收發達到「零時差、高穩定、不漏包」的嚴苛標準。'
+            },
+            'data': {
+                title: '量化思維帶來的風險管理？',
+                desc: '量化交易的核心在於「風險控管 (MDD)」與「極端容錯設計」。這種處理金融高頻數據的嚴謹態度，直接對應到空拍機開發中對「系統異常處理」、「飛行數據分析」與「自動化安全降落」的底層穩定性要求。'
+            }
+        };
+
+        function updateSkillDetail(key) {
+            const detail = skillDetails[key];
+            if (detail) {
+                // Flash effect
+                const container = document.getElementById('skill-detail-desc').parentElement;
+                container.classList.remove('bg-cyan-900/20');
+                container.classList.add('bg-cyan-800/40', 'scale-[1.01]');
+                
+                setTimeout(() => {
+                    container.classList.remove('bg-cyan-800/40', 'scale-[1.01]');
+                    container.classList.add('bg-cyan-900/20');
+                }, 200);
+
+                document.getElementById('skill-detail-title').innerText = detail.title;
+                document.getElementById('skill-detail-desc').innerText = detail.desc;
+            }
+        }
+    </script>
+</body>
+</html>
