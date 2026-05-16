@@ -36,7 +36,8 @@
             width: 8px;
         }
         ::-webkit-scrollbar-track {
-            background: #0f172a; \n        }
+            background: #0f172a;
+        }
         ::-webkit-scrollbar-thumb {
             background: #334155; 
             border-radius: 4px;
@@ -52,10 +53,16 @@
             max-width: 600px;
             margin-left: auto;
             margin-right: auto;
-            height: 400px;
-            max-height: 55vh;
+            height: 320px;
+            max-height: 60vh;
         }
-        
+
+        @media (min-width: 640px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+
         @media (min-width: 768px) {
             .chart-container {
                 height: 440px;
@@ -79,6 +86,24 @@
             box-shadow: 0 10px 25px -5px rgba(6, 182, 212, 0.2);
             border-color: #06b6d4;
         }
+
+        /* 避免長字串（連續英數）撐破版面，並讓中文於行尾自然斷行 */
+        html, body {
+            overflow-x: hidden;
+        }
+        body, p, h1, h2, h3, h4, li, span, a, button {
+            overflow-wrap: anywhere;
+            word-break: break-word;
+            line-break: auto;
+        }
+
+        /* 行動版橫向滑動的導覽列 */
+        .mobile-nav-scroll {
+            scrollbar-width: none;
+        }
+        .mobile-nav-scroll::-webkit-scrollbar {
+            display: none;
+        }
     </style>
 </head>
 <body class="bg-slate-900 text-slate-300 font-sans antialiased flex flex-col md:flex-row min-h-screen">
@@ -97,19 +122,29 @@
                 </div>
             </div>
             
-            <ul class="space-y-2 hidden md:block">
+            <ul class="hidden md:block space-y-2">
                 <li><a href="#summary" class="block py-2 px-4 rounded hover:bg-slate-800 hover:text-cyan-400 transition nav-link text-white bg-slate-800 border-l-2 border-cyan-400" data-target="summary">💡 終端簡介</a></li>
                 <li><a href="#skills" class="block py-2 px-4 rounded hover:bg-slate-800 hover:text-cyan-400 transition nav-link text-slate-400" data-target="skills">🛠 核心技術與模型</a></li>
                 <li><a href="#projects" class="block py-2 px-4 rounded hover:bg-slate-800 hover:text-cyan-400 transition nav-link text-slate-400" data-target="projects">🚀 AI 視覺實戰</a></li>
                 <li><a href="#experience" class="block py-2 px-4 rounded hover:bg-slate-800 hover:text-cyan-400 transition nav-link text-slate-400" data-target="experience">💻 系統工程經歷</a></li>
                 <li><a href="#quant" class="block py-2 px-4 rounded hover:bg-slate-800 hover:text-cyan-400 transition nav-link text-slate-400" data-target="quant">📊 量化開發優勢</a></li>
             </ul>
+
+            <div class="md:hidden mobile-nav-scroll -mx-6 px-6 overflow-x-auto">
+                <ul class="flex gap-2 whitespace-nowrap pb-1">
+                    <li><a href="#summary" class="inline-block py-1.5 px-3 rounded text-xs bg-slate-800 border border-cyan-500/50 text-cyan-300">💡 簡介</a></li>
+                    <li><a href="#skills" class="inline-block py-1.5 px-3 rounded text-xs bg-slate-800 border border-slate-700 text-slate-300">🛠 技術</a></li>
+                    <li><a href="#projects" class="inline-block py-1.5 px-3 rounded text-xs bg-slate-800 border border-slate-700 text-slate-300">🚀 專案</a></li>
+                    <li><a href="#experience" class="inline-block py-1.5 px-3 rounded text-xs bg-slate-800 border border-slate-700 text-slate-300">💻 經歷</a></li>
+                    <li><a href="#quant" class="inline-block py-1.5 px-3 rounded text-xs bg-slate-800 border border-slate-700 text-slate-300">📊 量化</a></li>
+                </ul>
+            </div>
         </div>
         
         <div class="text-xs md:text-sm text-slate-500 border-t border-slate-700/50 pt-4 flex flex-row flex-wrap justify-center md:flex-col md:justify-start gap-x-4 gap-y-1">
             <p>📍 台灣, 台中市</p>
             <p>📞 0916-445-452</p>
-            <p class="truncate" title="quantjson@gmail.com">✉️ quantjson@gmail.com</p>
+            <p class="break-all">✉️ quantjson@gmail.com</p>
         </div>
     </nav>
 
@@ -155,7 +190,7 @@
                 </div>
 
                 <div class="flex flex-col gap-3">
-                    <button onclick="updateSkillDetail('ai_agent')" class="text-left tech-card bg-slate-800/80 p-4 rounded-lg border border-cyan-500/50 focus:outline-none focus:border-cyan-400 shadow-[0_0_10px_rgba(6,182,212,0.1)] relative overflow-hidden">
+                    <button onclick="updateSkillDetail('ai_agent')" class="text-left tech-card bg-slate-800/80 p-4 pr-20 rounded-lg border border-cyan-500/50 focus:outline-none focus:border-cyan-400 shadow-[0_0_10px_rgba(6,182,212,0.1)] relative overflow-hidden">
                         <div class="absolute top-0 right-0 bg-cyan-500 text-slate-900 text-[10px] font-bold px-2 py-0.5 rounded-bl">核心優勢</div>
                         <h3 class="text-cyan-400 font-bold text-base md:text-lg mb-1 mt-1">🤖 AI Agent 與輔助開發</h3>
                         <p class="text-xs md:text-sm text-slate-400">Cursor, Claude Code, 提示詞工程 (Prompting)</p>
@@ -223,7 +258,7 @@
                     <div class="h-2 bg-gradient-to-r from-cyan-500 to-blue-600"></div>
                     <div class="p-6 flex-1 flex flex-col">
                         <div class="text-xs font-mono text-cyan-400 mb-2 border border-cyan-900 bg-cyan-900/30 inline-block px-2 py-1 rounded w-max">競賽全國第11名 (200隊)</div>
-                        <h3 class="text-lg md:text-xl font-bold text-white mb-3">所羅門股份有限公司 - SOLOMON</h3>
+                        <h3 class="text-lg md:text-xl font-bold text-white mb-3">SOLOMON 所羅門 - AI 視覺競賽</h3>
                         <p class="text-slate-400 text-xs md:text-sm mb-4 flex-1 leading-relaxed">
                             這是一家台灣的 AI 軟體上市櫃公司，近年成功轉型為全球工業人工智慧（AI）與 3D 機器視覺的創新領導者。本專案透過影像識別技術結合實體機械手臂，實現工業自動化控制（包含避障、取放、亂堆及反光物辨識）。
                         </p>
@@ -439,9 +474,13 @@
                             lineWidth: 1
                         },
                         pointLabels: {
-                            font: { size: 15, family: "'Inter', sans-serif", weight: 'bold' },
+                            font: {
+                                size: window.innerWidth < 640 ? 10 : (window.innerWidth < 768 ? 12 : 15),
+                                family: "'Inter', sans-serif",
+                                weight: 'bold'
+                            },
                             color: '#cbd5e1',
-                            padding: 18 // 增加標籤文字與七邊形頂點的間距，營造舒適的呼吸感與空氣感
+                            padding: window.innerWidth < 640 ? 6 : 18 // 視窗寬度動態縮放，避免標籤超出畫面
                         },
                         ticks: { display: false }
                     }
