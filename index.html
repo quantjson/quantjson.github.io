@@ -36,7 +36,8 @@
             width: 8px;
         }
         ::-webkit-scrollbar-track {
-            background: #0f172a; \n        }
+            background: #0f172a; 
+        }
         ::-webkit-scrollbar-thumb {
             background: #334155; 
             border-radius: 4px;
@@ -52,13 +53,13 @@
             max-width: 600px;
             margin-left: auto;
             margin-right: auto;
-            height: 400px;
-            max-height: 55vh;
+            height: 380px;
+            max-height: 50vh;
         }
         
         @media (min-width: 768px) {
             .chart-container {
-                height: 440px;
+                height: 420px;
             }
         }
 
@@ -148,7 +149,7 @@
             </p>
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-                <div class="bg-slate-800/40 p-4 md:p-6 rounded-xl border border-slate-700/80 w-full shadow-inner">
+                <div class="bg-slate-800/50 p-4 md:p-6 rounded-xl border border-slate-700 w-full">
                     <div class="chart-container">
                         <canvas id="skillsRadarChart"></canvas>
                     </div>
@@ -321,7 +322,7 @@
                         </li>
                         <li class="bg-slate-900/50 p-4 rounded border border-slate-700/50">
                             <strong class="text-white block mb-1 text-sm md:text-base">🔗 WebSocket 與複雜 API 串接</strong>
-                            <span class="text-slate-400 text-xs md:text-sm">具備深厚介接能力，熟悉如何保持即時數據的雙向長連接穩定，確保無人機遙測數據與影像流不斷線.</span>
+                            <span class="text-slate-400 text-xs md:text-sm">具備深厚介接能力，熟悉如何保持即時數據的雙向長連接穩定，確保無人機遙測數據與影像流不斷線。</span>
                         </li>
                     </ul>
                 </div>
@@ -357,7 +358,7 @@
         const summaryText = "具備電子工程硬體思維與堅實程式開發能力的軟體工程師，專注於 Python/C++ 開發，對 AI 影像辨識與空拍機系統整合抱有高度熱忱。\n\n在無人機領域，我曾帶領團隊完成「即時無人機口罩偵測與辨識系統」，親自解決大疆設備的傳輸限制，建立超低延遲投影架構並部署 YOLOv5 邊緣運算模型。除此之外，在現代開發流程中，我熟練運用 Cursor、Claude Code 等 AI 開發工具，並掌握精準的 Prompt 提示詞技巧。這使我能引導 AI Agent 高效協作，不僅加速演算法迭代，更能迅速突破未知的硬體通訊或底層除錯瓶頸。\n\n結合近期在量化軟體開發中累積的高頻 API 串接與極端系統容錯設計，我致力於運用最新的 AI 工具賦能，為團隊打造具備精準視覺與零時差穩定性的空拍機軟體系統。";
         
         let i = 0;
-        const speed = 15; 
+        const speed = 15; // typing speed
         const typeTarget = document.getElementById("typewriter-text");
         typeTarget.innerHTML = '<span class="cursor"></span>';
 
@@ -397,7 +398,7 @@
             });
         });
 
-        // --- 3. Chart.js Skills Radar Chart (美化升級版七邊形) ---
+        // --- 3. Chart.js Skills Radar Chart (字體放大優化版本) ---
         const ctx = document.getElementById('skillsRadarChart').getContext('2d');
         Chart.defaults.color = '#94a3b8';
         Chart.defaults.font.family = "'Inter', sans-serif";
@@ -407,16 +408,13 @@
             datasets: [{
                 label: '技術掌握度',
                 data: [90, 88, 85, 88, 85, 85, 95], 
-                backgroundColor: 'rgba(34, 211, 238, 0.15)', // 賽博青色半透明填充面
-                borderColor: '#22d3ee', // 高亮青色外輪廓
-                borderWidth: 3, // 加粗外框線條，使正七邊形更加銳利、形狀更明顯
-                pointBackgroundColor: '#0f172a', // 端點內芯使用深色底
-                pointBorderColor: '#34d399', // 端點外圈使用極致亮綠色，製造霓虹發光感
-                pointBorderWidth: 2, // 端點外圈厚度
-                pointRadius: 5, // 放大端點尺寸，點擊更精確、層次更立體
-                pointHoverRadius: 7,
-                pointHoverBackgroundColor: '#34d399',
+                backgroundColor: 'rgba(6, 182, 212, 0.2)',
+                borderColor: 'rgba(6, 182, 212, 1)',
+                pointBackgroundColor: '#0f172a',
+                pointBorderColor: '#22d3ee',
+                pointHoverBackgroundColor: '#22d3ee',
                 pointHoverBorderColor: '#fff',
+                borderWidth: 2,
             }]
         };
 
@@ -428,22 +426,14 @@
                 maintainAspectRatio: false,
                 scales: {
                     r: {
-                        min: 0,
-                        max: 100,
-                        angleLines: { 
-                            color: 'rgba(148, 163, 184, 0.15)', // 大幅淡化放射軸線，減少幾何雜訊
-                            lineWidth: 1 
-                        },
-                        grid: { 
-                            color: 'rgba(51, 65, 85, 0.4)', // 隱約的深 Slate 色同心圓網格，精緻不搶主線
-                            lineWidth: 1
-                        },
+                        angleLines: { color: 'rgba(255, 255, 255, 0.1)' },
+                        grid: { color: 'rgba(255, 255, 255, 0.1)' },
                         pointLabels: {
+                            // 大幅調大標籤字體尺寸（從 11px 調至 15px），確保清晰度
                             font: { size: 15, family: "'Inter', sans-serif", weight: 'bold' },
-                            color: '#cbd5e1',
-                            padding: 18 // 增加標籤文字與七邊形頂點的間距，營造舒適的呼吸感與空氣感
+                            color: '#cbd5e1'
                         },
-                        ticks: { display: false }
+                        ticks: { display: false, min: 0, max: 100 }
                     }
                 },
                 plugins: {
@@ -470,7 +460,7 @@
             },
             'cv': {
                 title: 'AI 影像辨識如何應用於空拍機？',
-                desc: '空拍機的核心在於精準識別目標物。我在大學實踐部署 YOLOv5 模型，讓無人機能即時偵測動態行為特徵；結合 CNN 架構與特徵萃取，能為無人機打造出快速精確的視覺神經中樞，在邊緣端實現毫秒級即時物體偵測。'
+                desc: '空拍機的核心在於精準識別目標物。我在大學實踐部署 YOLOv5 模型，讓無人機能即時偵測動態行為特徵；結合 CNN 架喚與特徵萃取，能為無人機打造出快速精確的視覺神經中樞，在邊緣端實現毫秒級即時物體偵測。'
             },
             'sys': {
                 title: '突破硬體限制的低延遲串流價值？',
