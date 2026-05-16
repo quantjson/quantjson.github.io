@@ -421,11 +421,13 @@
                         angleLines: { color: 'rgba(255, 255, 255, 0.1)' },
                         grid: { color: 'rgba(255, 255, 255, 0.1)' },
                         pointLabels: {
-                            // 修改區塊：放大字體並增加粗體顯示
-                            font: { size: getRadarFontSize(), family: "'Inter', sans-serif", weight: '600' },
+                            font: { size: 11, family: "'Inter', sans-serif" },
                             color: '#cbd5e1'
                         },
-                        ticks: { display: false, min: 0, max: 100 }
+                        // 👇 修改這裡：將 min 和 max 移出 ticks，直接放在 r 底下
+                        min: 0,
+                        max: 100,
+                        ticks: { display: false } 
                     }
                 },
                 plugins: {
