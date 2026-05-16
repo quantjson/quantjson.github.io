@@ -134,7 +134,7 @@
                     <span class="cursor"></span>
                 </div>
                 <div class="mt-6 text-slate-500">
-                    <p>// 核心目標：為團隊打造具備精準視覺識別與超低延遲運算能力的飛行系統。</p>
+                    <p>// 核心目標：引導 AI Agent 協作開發，為團隊打造具備精準視覺與超低延遲的飛行系統。</p>
                 </div>
             </div>
         </section>
@@ -144,7 +144,7 @@
                 <span class="text-cyan-500 mr-3">./</span> 核心技術矩陣
             </h2>
             <p class="text-slate-400 mb-8 leading-relaxed">
-                本區塊透過雷達圖量化展示我的技術堆疊。空拍機的 AI 軟體開發不僅需要模型訓練能力，更需要紮實的 C++/Python 系統串接與解決傳輸延遲的經驗。點擊右側技術標籤可檢視應用細節。
+                本區塊透過雷達圖量化展示我的技術堆疊。除了紮實的 C++/Python 與模型訓練能力外，我也精通 Cursor 等新世代 AI 開發工具，能以最高效率推進系統整合。點擊右側技術標籤可檢視應用細節。
             </p>
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
@@ -154,15 +154,21 @@
                     </div>
                 </div>
 
-                <div class="flex flex-col gap-4">
+                <div class="flex flex-col gap-3">
+                    <button onclick="updateSkillDetail('ai_agent')" class="text-left tech-card bg-slate-800/80 p-4 rounded-lg border border-cyan-500/50 focus:outline-none focus:border-cyan-400 shadow-[0_0_10px_rgba(6,182,212,0.1)] relative overflow-hidden">
+                        <div class="absolute top-0 right-0 bg-cyan-500 text-slate-900 text-[10px] font-bold px-2 py-0.5 rounded-bl">核心優勢</div>
+                        <h3 class="text-cyan-400 font-bold text-lg mb-1 mt-1">🤖 AI Agent 與輔助開發</h3>
+                        <p class="text-sm text-slate-400">Cursor, Claude Code, 提示詞工程 (Prompting)</p>
+                    </button>
+
                     <button onclick="updateSkillDetail('cv')" class="text-left tech-card bg-slate-800 p-4 rounded-lg border border-slate-700 focus:outline-none focus:border-cyan-500 focus:bg-slate-800/80">
                         <h3 class="text-cyan-400 font-bold text-lg mb-1">👁️ AI 與即時影像辨識</h3>
-                        <p class="text-sm text-slate-400">YOLOv5, CNN, VGG16, 即時物件偵測, 邊緣運算</p>
+                        <p class="text-sm text-slate-400">YOLOv5, CNN, VGG16, 邊緣運算</p>
                     </button>
                     
                     <button onclick="updateSkillDetail('sys')" class="text-left tech-card bg-slate-800 p-4 rounded-lg border border-slate-700 focus:outline-none focus:border-cyan-500 focus:bg-slate-800/80">
                         <h3 class="text-cyan-400 font-bold text-lg mb-1">⚙️ 無人機系統與低延遲傳輸</h3>
-                        <p class="text-sm text-slate-400">scrcpy 串流, win32gui/ctypes 整合, WebSocket</p>
+                        <p class="text-sm text-slate-400">scrcpy 串流, win32gui/ctypes, WebSocket</p>
                     </button>
 
                     <button onclick="updateSkillDetail('lang')" class="text-left tech-card bg-slate-800 p-4 rounded-lg border border-slate-700 focus:outline-none focus:border-cyan-500 focus:bg-slate-800/80">
@@ -206,7 +212,7 @@
                             <h4 class="text-white text-sm font-bold mb-2">技術貢獻：</h4>
                             <ul class="text-sm text-slate-400 space-y-1 list-disc list-inside">
                                 <li>訓練 YOLOv5 模型辨識 3 種口罩配戴行為。</li>
-                                <li>整合 scrcpy、win32gui 與 C語言 ctypes，突破硬體限制達最低傳輸延遲。</li>
+                                <li>整合 scrcpy、win32gui 與 C語言 ctypes 突破傳輸限制。</li>
                                 <li><span class="text-cyan-300">高度相關：</span>空拍機即時影像串流與底層整合。</li>
                             </ul>
                         </div>
@@ -247,20 +253,12 @@
                     </div>
                 </div>
             </div>
-            
-            <div class="mt-4 text-right text-xs text-slate-500">
-                *(其他機器學習專案包含：AI CPU 芒果光學影像辨識、Kaggle自動語音辨識 CTC模型訓練)*
-            </div>
         </section>
 
         <section id="experience" class="mb-24 scroll-mt-10">
             <h2 class="text-3xl font-bold text-white mb-6 flex items-center border-b border-slate-700 pb-2">
                 <span class="text-cyan-500 mr-3">></span> 系統工程與量化開發經歷
             </h2>
-            <p class="text-slate-400 mb-8 leading-relaxed">
-                本區塊列出近期的職業經歷。雖然領域主要在金融與量化策略，但其本質是處理**極端龐大的資料流、高頻率指令發送以及建構零時差的穩定後端系統**。這些底層系統架構與容錯設計能力，是開發空拍機可靠飛行軟體與遙測系統的關鍵基石。
-            </p>
-
             <div class="relative border-l-2 border-slate-700 ml-3 md:ml-6 space-y-12 pb-8">
                 <div class="relative pl-8 md:pl-0">
                     <div class="md:hidden absolute w-4 h-4 bg-cyan-500 rounded-full -left-[9px] top-1 shadow-[0_0_10px_rgba(34,211,238,0.8)]"></div>
@@ -270,13 +268,11 @@
                             <div class="text-slate-500 text-sm">Vanshi Global</div>
                             <div class="absolute w-4 h-4 bg-cyan-500 rounded-full -right-[25px] top-2 shadow-[0_0_10px_rgba(34,211,238,0.8)] z-10 border-4 border-slate-900"></div>
                         </div>
-                        <div class="md:hidden text-cyan-400 font-mono font-bold mb-1">2024.03 - 2024.05</div>
                         <div class="col-span-9 bg-slate-800/80 p-6 rounded-lg border border-slate-700 hover:border-cyan-500/50 transition">
                             <h3 class="text-xl font-bold text-white mb-1">策略開發與測試工程師</h3>
-                            <div class="md:hidden text-slate-500 text-sm mb-4">Vanshi Global</div>
                             <ul class="text-slate-300 space-y-2 mt-4">
-                                <li class="flex items-start"><span class="text-cyan-500 mr-2 mt-0.5">▪</span> <div><strong>系統自動化測試：</strong> 協助測試資金輪動自動化程式，排除 API 錯誤，確保無人值守系統的高可用性。</div></li>
-                                <li class="flex items-start"><span class="text-cyan-500 mr-2 mt-0.5">▪</span> <div><strong>伺服器程式開發：</strong> 參與交易伺服器程式開發，實現高頻率、低延遲的指令發送系統，概念同等於空拍機地面站的高頻遙測指令。</div></li>
+                                <li class="flex items-start"><span class="text-cyan-500 mr-2 mt-0.5">▪</span> <div><strong>系統自動化測試：</strong> 協助測試資金輪動自動化程式，確保無人值守系統的高可用性。</div></li>
+                                <li class="flex items-start"><span class="text-cyan-500 mr-2 mt-0.5">▪</span> <div><strong>伺服器程式開發：</strong> 參與交易伺服器開發，實現高頻率、低延遲的指令發送系統，概念同等於空拍機的高頻遙測指令。</div></li>
                             </ul>
                         </div>
                     </div>
@@ -290,13 +286,11 @@
                             <div class="text-slate-500 text-sm">量化通 (Quantpass)</div>
                             <div class="absolute w-4 h-4 bg-slate-600 rounded-full -right-[25px] top-2 z-10 border-4 border-slate-900"></div>
                         </div>
-                        <div class="md:hidden text-slate-300 font-mono font-bold mb-1">2022.10 - 至今</div>
                         <div class="col-span-9 bg-slate-800/80 p-6 rounded-lg border border-slate-700 hover:border-cyan-500/50 transition">
                             <h3 class="text-xl font-bold text-white mb-1">軟體開發 / 量化工程師</h3>
-                            <div class="md:hidden text-slate-500 text-sm mb-4">量化通 (Quantpass)</div>
                             <ul class="text-slate-300 space-y-2 mt-4">
-                                <li class="flex items-start"><span class="text-cyan-500 mr-2 mt-0.5">▪</span> <div><strong>後端與 API 串接：</strong> 深度使用 API 與 WebSocket 協議，負責跨平台系統連線功能，建構極端穩定、不漏包的即時數據傳輸連接。</div></li>
-                                <li class="flex items-start"><span class="text-cyan-500 mr-2 mt-0.5">▪</span> <div><strong>演算法與數據工程：</strong> 撰寫 Python 自動化腳本處理即時大數據流，使用 Pandas/SQL 進行清洗分析，設計具備極限風險控管 (MDD) 的演算法。</div></li>
+                                <li class="flex items-start"><span class="text-cyan-500 mr-2 mt-0.5">▪</span> <div><strong>後端與 API 串接：</strong> 負責跨平台系統連線，建構穩定、不漏包的即時 WebSocket 數據傳輸連接。</div></li>
+                                <li class="flex items-start"><span class="text-cyan-500 mr-2 mt-0.5">▪</span> <div><strong>演算法與數據工程：</strong> 設計自動化腳本處理即時大數據流，開發具備極限風險控管 (MDD) 的演算法。</div></li>
                             </ul>
                         </div>
                     </div>
@@ -310,21 +304,14 @@
                     <span class="text-cyan-500 mr-3">~</span> 系統容錯與傳輸優勢
                 </h2>
                 <div class="bg-slate-800 p-6 rounded-lg border border-slate-700 h-full">
-                    <p class="text-sm text-cyan-400 mb-4 font-mono">
-                        // 處理極端時序數據、高頻資料流與硬體通訊的底層軟體實力。
-                    </p>
                     <ul class="space-y-4">
                         <li class="bg-slate-900/50 p-4 rounded border border-slate-700/50">
                             <strong class="text-white block mb-1">🛡️ 高頻數據分析與極端容錯</strong>
-                            <span class="text-slate-400 text-sm">於量化交易領域培養出對「系統異常與延遲」的零容忍態度，建立嚴謹的回測與異常防護機制，完美對應空拍機對飛行安全的底層邏輯要求。</span>
+                            <span class="text-slate-400 text-sm">於量化領域培養出對「延遲」的零容忍態度，建立嚴謹的異常防護機制，完美對應空拍機對飛行安全的邏輯要求。</span>
                         </li>
                         <li class="bg-slate-900/50 p-4 rounded border border-slate-700/50">
                             <strong class="text-white block mb-1">🔗 WebSocket 與複雜 API 串接</strong>
-                            <span class="text-slate-400 text-sm">具備深厚的第三方介接能力，熟悉如何保持即時數據的雙向長連接穩定，確保無人機遙測數據與影像流不斷線。</span>
-                        </li>
-                        <li class="bg-slate-900/50 p-4 rounded border border-slate-700/50">
-                            <strong class="text-white block mb-1">🗣️ 團隊協作與專案統籌</strong>
-                            <span class="text-slate-400 text-sm">曾擔任大型專題隊長與北科大投資社社長，熟悉帶領團隊進行跨部門/跨領域的資源整合與敏捷開發溝通。</span>
+                            <span class="text-slate-400 text-sm">具備深厚介接能力，熟悉如何保持即時數據的雙向長連接穩定，確保無人機遙測數據與影像流不斷線。</span>
                         </li>
                     </ul>
                 </div>
@@ -343,16 +330,7 @@
                             <p class="text-slate-500 text-sm">2019.09 – 2023.06</p>
                         </div>
                     </div>
-                    
                     <div class="space-y-3 border-t border-slate-700 pt-6">
-                        <div class="flex items-start text-sm text-slate-300">
-                            <span class="text-yellow-500 mr-2">🏆</span> 
-                            <span>獲頒 110 學年度學業、操行、體育「三育成績優異獎」。</span>
-                        </div>
-                        <div class="flex items-start text-sm text-slate-300">
-                            <span class="text-green-500 mr-2">📜</span> 
-                            <span>取得教育部智慧創新跨域人才計畫 Coding 365「Python」、「IoT (物聯網)」、「Android」專業證書。</span>
-                        </div>
                         <div class="flex items-start text-sm text-slate-300">
                             <span class="text-blue-500 mr-2">🔧</span> 
                             <span>擁有丙級工業電子、乙級數位電子等技術證照，具備扎實硬體電路與 Verilog 邏輯底層理解。</span>
@@ -366,12 +344,11 @@
 
     <script>
         // --- 1. Terminal Typing Effect ---
-        const summaryText = "具備電子工程硬體思維與堅實程式開發能力的軟體工程師，專注於 Python/C++ 開發，對 AI 影像辨識與空拍機系統整合抱有高度熱忱。\n\n在無人機領域，我曾帶領團隊完成「即時無人機口罩偵測與辨識系統」，親自解決 DJI 設備的傳輸限制，利用 scrcpy 與 win32gui 建立超低延遲的即時投影架構，並成功部署 YOLOv5 模型進行空中邊緣運算。此外，亦於索羅門 AI 競賽中實踐視覺辨識與實體機械手臂的自動化避障整合。\n\n結合近期在量化軟體開發中累積的高頻 API/WebSocket 串接、龐大數據流處理與極端系統容錯設計，我致力於為空拍機團隊打造具備精準視覺與零時差穩定性的飛行軟體系統。";
+        const summaryText = "具備電子工程硬體思維與堅實程式開發能力的軟體工程師，專注於 Python/C++ 開發，對 AI 影像辨識與空拍機系統整合抱有高度熱忱。\n\n在無人機領域，我曾帶領團隊完成「即時無人機口罩偵測與辨識系統」，親自解決大疆設備的傳輸限制，建立超低延遲投影架構並部署 YOLOv5 邊緣運算模型。除此之外，在現代開發流程中，我熟練運用 Cursor、Claude Code 等 AI 開發工具，並掌握精準的 Prompt 提示詞技巧。這使我能引導 AI Agent 高效協作，不僅加速演算法迭代，更能迅速突破未知的硬體通訊或底層除錯瓶頸。\n\n結合近期在量化軟體開發中累積的高頻 API 串接與極端系統容錯設計，我致力於運用最新的 AI 工具賦能，為團隊打造具備精準視覺與零時差穩定性的空拍機軟體系統。";
         
         let i = 0;
-        const speed = 25; // typing speed in ms
+        const speed = 20; // typing speed
         const typeTarget = document.getElementById("typewriter-text");
-        // Clear placeholder span
         typeTarget.innerHTML = '<span class="cursor"></span>';
 
         function typeWriter() {
@@ -380,17 +357,14 @@
                 if (char === '\n') {
                     char = '<br>';
                 }
-                // insert character before the cursor
                 typeTarget.innerHTML = typeTarget.innerHTML.replace('<span class="cursor"></span>', char + '<span class="cursor"></span>');
                 i++;
                 setTimeout(typeWriter, speed);
             }
         }
-
-        // Start typing after a short delay
         setTimeout(typeWriter, 500);
 
-        // --- 2. Navigation Active State (Scroll Spy) ---
+        // --- 2. Navigation Active State ---
         const sections = document.querySelectorAll("section");
         const navLinks = document.querySelectorAll(".nav-link");
 
@@ -415,15 +389,15 @@
 
         // --- 3. Chart.js Skills Radar Chart ---
         const ctx = document.getElementById('skillsRadarChart').getContext('2d');
-        
         Chart.defaults.color = '#94a3b8';
         Chart.defaults.font.family = "'Inter', sans-serif";
 
         const skillsData = {
-            labels: ['程式語言基礎', 'AI 影像辨識 (YOLO/CNN)', '硬體/無人機串接', '系統後端/即時串流', '自動化邊緣運算', '高頻數據處理'],
+            // 加入了第七個維度：AI Agent 與輔助開發
+            labels: ['程式語言基礎', 'AI 影像辨識 (YOLO)', '無人機系統整合', '系統後端/即時串流', '自動化邊緣運算', '高頻數據處理', 'AI Agent 與輔助開發'],
             datasets: [{
-                label: '技能熟悉度',
-                data: [90, 88, 85, 88, 85, 85],
+                label: '技術掌握度',
+                data: [90, 88, 85, 88, 85, 85, 95], // AI 工具給予高分凸顯優勢
                 backgroundColor: 'rgba(6, 182, 212, 0.2)',
                 borderColor: 'rgba(6, 182, 212, 1)',
                 pointBackgroundColor: '#0f172a',
@@ -445,14 +419,10 @@
                         angleLines: { color: 'rgba(255, 255, 255, 0.1)' },
                         grid: { color: 'rgba(255, 255, 255, 0.1)' },
                         pointLabels: {
-                            font: { size: 12, family: "'Inter', sans-serif" },
+                            font: { size: 11, family: "'Inter', sans-serif" },
                             color: '#cbd5e1'
                         },
-                        ticks: {
-                            display: false,
-                            min: 0,
-                            max: 100
-                        }
+                        ticks: { display: false, min: 0, max: 100 }
                     }
                 },
                 plugins: {
@@ -463,36 +433,35 @@
                         bodyColor: '#e2e8f0',
                         borderColor: '#334155',
                         borderWidth: 1,
-                        padding: 10,
-                        callbacks: {
-                            label: function(context) {
-                                return ' 實力維度: ' + context.raw + '/100';
-                            }
-                        }
+                        padding: 10
                     }
                 }
             }
         };
 
-        let myRadarChart = new Chart(ctx, config);
+        new Chart(ctx, config);
 
         // --- 4. Interactive Skill Details Logic ---
         const skillDetails = {
+            'ai_agent': {
+                title: 'AI 工具如何加速空拍機系統開發？',
+                desc: '現代軟體工程講求開發速度與品質。我熟練運用 Cursor 與 Claude Code 等 AI 工具，並具備進階的提示詞 (Prompt) 優化能力。透過精確下達指令引導 AI Agent 協作，不僅能成倍縮短 C++/Python 演算法的編寫與除錯時間，更能快速釐清空拍機底層硬體通訊與即時串流的未知難題，展現強大的工程解決力。'
+            },
             'cv': {
                 title: 'AI 影像辨識如何應用於空拍機？',
-                desc: '空拍機的核心在於精準識別目標物。我在大學實務專題中親自部署 YOLOv5 預訓練模型，成功讓大疆無人機能即時偵測多種動態行為特徵；結合 CNN 與 VGG16 架構的實戰經驗，能為無人機打造出快速且精確的「視覺神經中樞」。'
+                desc: '空拍機的核心在於精準識別目標物。我在大學實踐部署 YOLOv5 模型，讓無人機能即時偵測動態行為特徵；結合 CNN 架構實戰，能為無人機打造出快速精確的視覺神經中樞。'
             },
             'sys': {
                 title: '突破硬體限制的低延遲串流價值？',
-                desc: '即時邊緣運算最大的挑戰是「畫面延遲」。在無人機專案中，為了解決內建直播延遲過高的痛點，我整合了 scrcpy 工具，並搭配 Python win32gui 與 C語言 ctypes 讀取畫面，成功將手機接收的無人機畫面以極低延遲傳送給 AI 引擎。'
+                desc: '為了解決無人機內建直播延遲過高的痛點，我整合了 scrcpy 工具，並搭配 Python win32gui 與 C語言 ctypes，成功將無人機畫面以「極低延遲」傳送給 AI 邊緣運算引擎。'
             },
             'lang': {
                 title: '底層語言如何發揮效用？',
-                desc: '空拍機的飛行控制極度要求效能。C++ 與 C 提供硬體通訊的極速效能，Python 則負責高階的 AI 邏輯。結合我電子系背景的 IoT 物聯網技術證照與 Verilog 底層思維，能完美兼顧感測器驅動與上層應用軟體的整合。'
+                desc: 'C++ 與 C 提供硬體通訊的極速效能，Python 負責高階 AI 邏輯。結合電子系 Verilog 硬體底層思維，能完美兼顧空拍機感測器驅動與上層應用的整合。'
             },
             'data': {
                 title: '量化思維帶來的風險管理與傳輸穩定性？',
-                desc: '處理金融高頻數據的嚴謹態度，直接對應空拍機的「系統容錯」。我深諳 WebSocket 雙向長連接技術，確保在複雜網路環境下，無人機的回傳影像流與遠端遙測指令能達到「零時差、不漏包」的高穩定標準。'
+                desc: '處理金融高頻數據的態度，直接對應空拍機的「系統容錯」。我深諳 WebSocket 雙向長連接，確保無人機的回傳影像流與遙測指令達到零時差、不漏包的高標準。'
             }
         };
 
